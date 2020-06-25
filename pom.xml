@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.0.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>co.cafeto</groupId>
+	<artifactId>EventManager</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>EventManager</name>
+	<description>Challenge to CafetoHUB</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<aws-java-sdk.version>1.11.750</aws-java-sdk.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Auth0 Dependencies -->
+		<dependency>
+		  <groupId>com.auth0</groupId>
+		  <artifactId>auth0-spring-security-api</artifactId>
+		  <version>1.1.0</version>
+		</dependency>
+		<!-- Auth0 Dependencies -->
+		
+		<!-- Spring Cloud for AWS INtegration-->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-aws</artifactId>
+		    <version>2.2.1.RELEASE</version>
+		</dependency>
+		<!-- Spring Cloud for AWS INtegration-->
+		<dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>                
+        </dependency>
+	</dependencies>
+
+<profiles>
+        <profile>
+            <id>DEV</id>
+            <properties>
+            	
+            	<!-- Server Configuration -->
+            	<server.port>9898</server.port>
+            	<spring.servlet.multipart.max-file-size>15MB</spring.servlet.multipart.max-file-size>
+            	<spring.servlet.multipart.max-request-size>15MB</spring.servlet.multipart.max-request-size>
+            	
+            	<!-- DB Configuration -->
+                <spring.jpa.database>POSTGRESQL</spring.jpa.database>
+				<spring.jpa.show-sql>true</spring.jpa.show-sql>
+				<spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+				<spring.datasource.driver-class-name>org.postgresql.Driver</spring.datasource.driver-class-name>
+				<spring.datasource.url>jdbc:postgresql://localhost/cafetoevent</spring.datasource.url>
+				<spring.datasource.username>postgres</spring.datasource.username>
+				<spring.datasource.password>admin</spring.datasource.password>
+				<spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>true</spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>
+				
+				<!-- Auth0 Configuration -->
+				<auth0.issuer>https://clarce.auth0.com/</auth0.issuer>
+				<auth0.apiAudience>https://cafetoevent/api</auth0.apiAudience>
+				 
+				<!-- AWS S3 Configuraio -->
+				<cloud.aws.stack.auto>false</cloud.aws.stack.auto>
+				<cloud.aws.region.static>us-east-2</cloud.aws.region.static>
+				<cloud.aws.credentials.accessKey>AKIAVPJSMRJCY4FPN4UT</cloud.aws.credentials.accessKey>
+				<cloud.aws.credentials.secretKey>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</cloud.aws.credentials.secretKey>
+				<app.awsServices.bucketName>cafeto-event-bucket</app.awsServices.bucketName>
+				<app.awsServices.file.max-size>5242880</app.awsServices.file.max-size>
+				<app.awsServices.path.public>https://cafeto-event-bucket.s3.us-east-2.amazonaws.com/</app.awsServices.path.public>
+				
+				<!-- Firebase Configuration -->
+				<firebase.serverKey>AAAA2Qf-vSY:APA91bHGT-jhZX6a3OJT-Y3nuf9p5L7yJaskrqQP9jkiJHWnoBy_BSKop9wlEaFlPjd7urbMg4VsvoSdaFbeUgr0XxU0H8pcC8oGbeEiIjNk2o8p4vyVdbopwwPpbsK7JZ-dUqt0Lb27</firebase.serverKey>
+				<firebase.apiUrl>https://fcm.googleapis.com/fcm/send</firebase.apiUrl>
+	           </properties>
+        </profile>
+        <profile>
+            <id>QA</id>
+            <properties>
+                <!-- Server Configuration -->
+            	<server.port>9898</server.port>
+            	<spring.servlet.multipart.max-file-size>15MB</spring.servlet.multipart.max-file-size>
+            	<spring.servlet.multipart.max-request-size>15MB</spring.servlet.multipart.max-request-size>
+            	
+            	<!-- DB Configuration -->
+                <spring.jpa.database>POSTGRESQL</spring.jpa.database>
+				<spring.jpa.show-sql>true</spring.jpa.show-sql>
+				<spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+				<spring.datasource.driver-class-name>org.postgresql.Driver</spring.datasource.driver-class-name>
+				<spring.datasource.url>jdbc:postgresql://localhost/cafetoevent</spring.datasource.url>
+				<spring.datasource.username>postgres</spring.datasource.username>
+				<spring.datasource.password>admin</spring.datasource.password>
+				<spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>true</spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>
+				
+				<!-- Auth0 Configuration -->
+				<auth0.issuer>https://clarce.auth0.com/</auth0.issuer>
+				<auth0.apiAudience>https://cafetoevent/api</auth0.apiAudience>
+				 
+				<!-- AWS S3 Configuraio -->
+				<cloud.aws.stack.auto>false</cloud.aws.stack.auto>
+				<cloud.aws.region.static>us-east-2</cloud.aws.region.static>
+				<cloud.aws.credentials.accessKey>AKIAVPJSMRJCY4FPN4UT</cloud.aws.credentials.accessKey>
+				<cloud.aws.credentials.secretKey>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</cloud.aws.credentials.secretKey>
+				<app.awsServices.bucketName>cafeto-event-bucket</app.awsServices.bucketName>
+				<app.awsServices.file.max-size>5242880</app.awsServices.file.max-size>
+				<app.awsServices.path.public>https://cafeto-event-bucket.s3.us-east-2.amazonaws.com/</app.awsServices.path.public>
+				
+				<!-- Firebase Configuration -->
+				<firebase.serverKey>AAAA2Qf-vSY:APA91bHGT-jhZX6a3OJT-Y3nuf9p5L7yJaskrqQP9jkiJHWnoBy_BSKop9wlEaFlPjd7urbMg4VsvoSdaFbeUgr0XxU0H8pcC8oGbeEiIjNk2o8p4vyVdbopwwPpbsK7JZ-dUqt0Lb27</firebase.serverKey>
+				<firebase.apiUrl>https://fcm.googleapis.com/fcm/send</firebase.apiUrl>
+            </properties>
+        </profile>
+        <profile>
+            <id>PROD</id>
+            <activation>
+		      <activeByDefault>true</activeByDefault>
+		    </activation>
+            <properties>
+            	<!-- Server Configuration -->
+            	<server.port>9898</server.port>
+            	<spring.servlet.multipart.max-file-size>15MB</spring.servlet.multipart.max-file-size>
+            	<spring.servlet.multipart.max-request-size>15MB</spring.servlet.multipart.max-request-size>
+            	
+            	<!-- DB Configuration -->
+                <spring.jpa.database>POSTGRESQL</spring.jpa.database>
+				<spring.jpa.show-sql>true</spring.jpa.show-sql>
+				<spring.jpa.hibernate.ddl-auto>update</spring.jpa.hibernate.ddl-auto>
+				<spring.datasource.driver-class-name>org.postgresql.Driver</spring.datasource.driver-class-name>
+				<spring.datasource.url>jdbc:postgresql://localhost/cafetoevent</spring.datasource.url>
+				<spring.datasource.username>postgres</spring.datasource.username>
+				<spring.datasource.password>admin</spring.datasource.password>
+				<spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>true</spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation>
+				
+				<!-- Auth0 Configuration -->
+				<auth0.issuer>https://clarce.auth0.com/</auth0.issuer>
+				<auth0.apiAudience>https://cafetoevent/api</auth0.apiAudience>
+				 
+				<!-- AWS S3 Configuraio -->
+				<cloud.aws.stack.auto>false</cloud.aws.stack.auto>
+				<cloud.aws.region.static>us-east-2</cloud.aws.region.static>
+				<cloud.aws.credentials.accessKey>AKIAVPJSMRJCY4FPN4UT</cloud.aws.credentials.accessKey>
+				<cloud.aws.credentials.secretKey>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</cloud.aws.credentials.secretKey>
+				<app.awsServices.bucketName>cafeto-event-bucket</app.awsServices.bucketName>
+				<app.awsServices.file.max-size>5242880</app.awsServices.file.max-size>
+				<app.awsServices.path.public>https://cafeto-event-bucket.s3.us-east-2.amazonaws.com/</app.awsServices.path.public>
+				
+				<!-- Firebase Configuration -->
+				<firebase.serverKey>AAAA2Qf-vSY:APA91bHGT-jhZX6a3OJT-Y3nuf9p5L7yJaskrqQP9jkiJHWnoBy_BSKop9wlEaFlPjd7urbMg4VsvoSdaFbeUgr0XxU0H8pcC8oGbeEiIjNk2o8p4vyVdbopwwPpbsK7JZ-dUqt0Lb27</firebase.serverKey>
+				<firebase.apiUrl>https://fcm.googleapis.com/fcm/send</firebase.apiUrl>
+            </properties>
+        </profile>
+    </profiles>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
